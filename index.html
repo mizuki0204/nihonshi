@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>日本史フラッシュカード</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;500;700&family=Noto+Sans+JP:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#f7f5f0;--bgc:#ffffff;--bgs:#f0ede6;
+  --tx:#1a1814;--txs:#6b6560;--txt:#9e998f;
+  --bd:rgba(0,0,0,0.1);--bdm:rgba(0,0,0,0.18);
+  --ac:#3C3489;--acl:#EEEDFE;--acm:#7F77DD;
+  --r:10px;--rl:14px;
+}
+@media(prefers-color-scheme:dark){:root{
+  --bg:#16140f;--bgc:#201d17;--bgs:#282420;
+  --tx:#f0ece3;--txs:#a09a8e;--txt:#6b6560;
+  --bd:rgba(255,255,255,0.1);--bdm:rgba(255,255,255,0.18);
+  --ac:#7F77DD;--acl:#26215C;--acm:#AFA9EC;
+}}
+body{font-family:'Noto Sans JP',sans-serif;background:var(--bg);color:var(--tx);min-height:100vh}
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:0 16px;height:54px;background:var(--bgc);border-bottom:0.5px solid var(--bd);position:sticky;top:0;z-index:10}
+.logo{font-family:'Noto Serif JP',serif;font-size:17px;font-weight:700;letter-spacing:.04em}
+.nav{display:flex;gap:4px}
+.nbtn{padding:5px 12px;font-size:13px;font-family:'Noto Sans JP',sans-serif;border:0.5px solid var(--bd);border-radius:20px;background:transparent;color:var(--txs);cursor:pointer;display:flex;align-items:center;gap:4px;transition:all .15s}
+.nbtn.on,.nbtn:hover{background:var(--acl);color:var(--ac);border-color:var(--acm)}
+.page{display:none;padding:16px;max-width:680px;margin:0 auto}
+.page.on{display:block}
+
+/* KEY BOX */
+.keybox{background:var(--bgc);border:0.5px solid var(--bd);border-radius:var(--r);padding:14px;margin-bottom:14px}
+.keytit{font-size:13px;font-weight:500;margin-bottom:8px;display:flex;align-items:center;gap:5px}
+.keyrow{display:flex;gap:6px;margin-bottom:6px}
+.keyrow input{flex:1;padding:8px 10px;border:0.5px solid var(--bdm);border-radius:var(--r);background:var(--bgs);color:var(--tx);font-size:13px;font-family:monospace;outline:none}
+.keyrow input:focus{border-color:var(--acm)}
+.keystatus{font-size:12px;color:var(--txs)}
+.keystatus.ok{color:#3B6D11}
+
+/* STATS */
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px}
+.scard{background:var(--bgc);border:0.5px solid var(--bd);border-radius:var(--r);padding:12px;text-align:center}
+.snum{font-family:'Noto Serif JP',serif;font-size:28px;font-weight:700;line-height:1}
+.slbl{font-size:11px;color:var(--txt);margin-top:4px}
+
+/* CHIPS */
+.chips{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:12px}
+.chip{padding:4px 12px;font-size:12px;border:0.5px solid var(--bd);border-radius:20px;background:var(--bgc);color:var(--txs);cursor:pointer;font-family:'Noto Sans JP',sans-serif;transition:all .15s}
+.chip.on{background:var(--acl);color:var(--ac);border-color:var(--acm)}
+
+/* CARD */
+.chd{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.prog{font-size:12px;color:var(--txs)}
+.cwrap{perspective:1200px;cursor:pointer;margin-bottom:12px;user-select:none}
+.cinn{position:relative;width:100%;height:240px;transform-style:preserve-3d;transition:transform .5s cubic-bezier(.4,0,.2,1)}
+.cinn.flipped{transform:rotateY(180deg)}
+.cface{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;background:var(--bgc);border:0.5px solid var(--bd);border-radius:var(--rl);padding:24px;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.cback{transform:rotateY(180deg);align-items:flex-start;justify-content:flex-start;overflow-y:auto}
+.cterm{font-family:'Noto Serif JP',serif;font-size:38px;font-weight:700;text-align:center}
+.chint{font-size:12px;color:var(--txt);margin-bottom:12px}
+.badge{display:inline-block;padding:4px 14px;border-radius:20px;background:var(--acl);color:var(--ac);font-size:13px;font-weight:500;margin-bottom:10px}
+.dtext{font-size:15px;line-height:1.85;color:var(--tx)}
+.ccat{font-size:12px;color:var(--txt);margin-top:8px}
+.cacts{display:flex;gap:10px;justify-content:center}
+
+/* BUTTONS */
+.btn{padding:9px 20px;font-size:14px;font-family:'Noto Sans JP',sans-serif;border:0.5px solid var(--bdm);border-radius:var(--r);background:var(--bgc);color:var(--tx);cursor:pointer;display:inline-flex;align-items:center;gap:6px;transition:all .15s}
+.btn:hover{background:var(--bgs)}
+.btn:active{transform:scale(.97)}
+.btnp{background:var(--ac);color:#fff;border-color:var(--ac)}
+.btnp:hover{opacity:.88}
+.btnsm{padding:6px 14px;font-size:13px}
+.btnw{width:100%;justify-content:center}
+
+/* EMPTY */
+.empty{text-align:center;padding:3rem 1rem;color:var(--txs);font-size:14px;line-height:1.9}
+
+/* MANAGE */
+.toolbar{display:flex;gap:8px;margin-bottom:12px}
+.toolbar select{flex:1;padding:9px 10px;border:0.5px solid var(--bdm);border-radius:var(--r);background:var(--bgc);color:var(--tx);font-size:14px;font-family:'Noto Sans JP',sans-serif;outline:none}
+.li{background:var(--bgc);border:0.5px solid var(--bd);border-radius:var(--r);padding:12px 14px;display:flex;align-items:center;gap:10px;margin-bottom:6px}
+.literm{font-family:'Noto Serif JP',serif;font-size:16px;font-weight:500;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.liera{font-size:11px;color:var(--ac);background:var(--acl);padding:3px 10px;border-radius:12px;white-space:nowrap}
+.ibtn{background:transparent;border:none;cursor:pointer;color:var(--txt);padding:5px;border-radius:6px;font-size:17px;line-height:1;display:flex;align-items:center;transition:all .15s}
+.ibtn:hover{color:var(--tx);background:var(--bgs)}
+.ibtn.del:hover{color:#A32D2D}
+
+/* ADD */
+.aitabs{display:flex;border:0.5px solid var(--bd);border-radius:var(--r);overflow:hidden;margin-bottom:14px}
+.atab{flex:1;padding:10px 6px;font-size:13px;font-family:'Noto Sans JP',sans-serif;border:none;background:transparent;color:var(--txs);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:5px;transition:all .15s}
+.atab.on{background:var(--bgs);color:var(--tx);font-weight:500}
+.apan{display:none}
+.apan.on{display:block}
+.alert{padding:10px 14px;border-radius:var(--r);font-size:13px;line-height:1.6;margin-bottom:12px;border-left:3px solid #7ab3e8;background:#EAF2FB;color:#185FA5}
+@media(prefers-color-scheme:dark){.alert{background:#0c2a48;color:#7ab3e8}}
+.fg{margin-bottom:10px}
+.fl{display:block;font-size:13px;color:var(--txs);margin-bottom:5px}
+input[type=text],input[type=password],select.fs,textarea{width:100%;padding:10px 12px;border:0.5px solid var(--bdm);border-radius:var(--r);background:var(--bgs);color:var(--tx);font-size:14px;font-family:'Noto Sans JP',sans-serif;outline:none;transition:border-color .15s}
+textarea{min-height:85px;resize:vertical}
+input[type=text]:focus,input[type=password]:focus,select.fs:focus,textarea:focus{border-color:var(--acm);background:var(--bgc)}
+.upload{border:1.5px dashed var(--bdm);border-radius:var(--r);padding:2.5rem 1.5rem;text-align:center;cursor:pointer;position:relative;margin-bottom:12px;transition:all .15s}
+.upload:hover{border-color:var(--acm);background:var(--acl)}
+.upload input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+.uico{font-size:32px;color:var(--txt);margin-bottom:6px}
+.utxt{font-size:14px;color:var(--txs);line-height:1.6}
+.pimg{width:100%;max-height:200px;object-fit:contain;border-radius:var(--r);margin-bottom:12px;border:0.5px solid var(--bd)}
+.loading{text-align:center;padding:2rem;color:var(--txs);font-size:14px}
+.spin{width:32px;height:32px;border:2.5px solid var(--bd);border-top-color:var(--ac);border-radius:50%;animation:spin .7s linear infinite;margin:0 auto 12px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.glist{display:flex;flex-direction:column;gap:7px;max-height:300px;overflow-y:auto;margin-bottom:12px;padding-right:2px}
+.gitem{background:var(--bgs);border:0.5px solid var(--bd);border-radius:var(--r);padding:12px;display:flex;align-items:flex-start;gap:10px}
+.gchk{width:17px;height:17px;accent-color:var(--ac);flex-shrink:0;margin-top:3px;cursor:pointer}
+.gterm{font-weight:500;font-size:15px;margin-bottom:3px}
+.gera{font-size:12px;color:var(--ac);margin-bottom:3px}
+.gdet{font-size:13px;color:var(--txs);line-height:1.65}
+.ghdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.gtit{font-size:12px;font-weight:500;color:var(--txs);text-transform:uppercase;letter-spacing:.06em}
+
+/* MODAL */
+.modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:50;align-items:center;justify-content:center;padding:16px}
+.modal-bg.open{display:flex}
+.modal{background:var(--bgc);border-radius:var(--rl);border:0.5px solid var(--bd);padding:22px;width:100%;max-width:500px;max-height:88vh;overflow-y:auto}
+.mtit{font-family:'Noto Serif JP',serif;font-size:18px;font-weight:500;margin-bottom:14px}
+.mfoot{display:flex;gap:8px;justify-content:flex-end;margin-top:12px}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="logo">日本史フラッシュカード</div>
+  <div class="nav">
+    <button class="nbtn on" onclick="showPage('study')"><i class="ti ti-cards"></i> 学習</button>
+    <button class="nbtn" onclick="showPage('manage')"><i class="ti ti-list"></i> 管理</button>
+    <button class="nbtn" onclick="showPage('add')"><i class="ti ti-plus"></i> 追加</button>
+  </div>
+</div>
+
+<!-- STUDY -->
+<div id="pg-study" class="page on">
+  <div class="keybox">
+    <div class="keytit"><i class="ti ti-key"></i> Gemini APIキー（AI生成機能に必要）</div>
+    <div class="keyrow">
+      <input type="password" id="api-input" placeholder="AIzaSy... を貼り付け" />
+      <button class="btn btnp btnsm" onclick="setKey()">設定</button>
+    </div>
+    <div class="keystatus" id="keystatus">
+      未設定 —
+      <a href="https://aistudio.google.com/apikey" target="_blank" style="color:var(--ac)">aistudio.google.com で無料取得</a>
+      （Googleアカウントのみ）
+    </div>
+  </div>
+
+  <div class="stats">
+    <div class="scard"><div class="snum" id="tc">0</div><div class="slbl">総カード数</div></div>
+    <div class="scard"><div class="snum" id="sc">0</div><div class="slbl">学習済み</div></div>
+    <div class="scard"><div class="snum" id="rc">0</div><div class="slbl">残り</div></div>
+  </div>
+
+  <div class="chips" id="chips"></div>
+  <div id="empty-s" class="empty">カードがありません。<br>「追加」タブからカードを追加してください。</div>
+  <div id="cardbox" style="display:none">
+    <div class="chd">
+      <span class="prog" id="prg"></span>
+      <button class="btn btnsm" onclick="shuffleDeck()"><i class="ti ti-arrows-shuffle"></i> シャッフル</button>
+    </div>
+    <div class="cwrap" onclick="flip()">
+      <div class="cinn" id="cinn">
+        <div class="cface">
+          <div class="chint">タップしてめくる</div>
+          <div class="cterm" id="cterm"></div>
+        </div>
+        <div class="cface cback">
+          <div class="badge" id="cera"></div>
+          <div class="dtext" id="cdet"></div>
+          <div class="ccat" id="ccat"></div>
+        </div>
+      </div>
+    </div>
+    <div class="cacts">
+      <button class="btn" onclick="prev()"><i class="ti ti-arrow-left"></i> 前へ</button>
+      <button class="btn btnp" onclick="next()">次へ <i class="ti ti-arrow-right"></i></button>
+    </div>
+  </div>
+</div>
+
+<!-- MANAGE -->
+<div id="pg-manage" class="page">
+  <div class="toolbar">
+    <select id="fsel" onchange="renderList()"></select>
+    <button class="btn btnp btnsm" onclick="openModal()"><i class="ti ti-plus"></i> 追加</button>
+  </div>
+  <div id="clist"></div>
+  <div id="empty-m" class="empty" style="display:none">カードがありません。</div>
+</div>
+
+<!-- ADD -->
+<div id="pg-add" class="page">
+  <div class="aitabs">
+    <button class="atab on" onclick="switchTab('text')"><i class="ti ti-robot"></i> テキスト生成</button>
+    <button class="atab" onclick="switchTab('photo')"><i class="ti ti-camera"></i> 写真読み取り</button>
+    <button class="atab" onclick="switchTab('manual')"><i class="ti ti-pencil"></i> 手動入力</button>
+  </div>
+
+  <div class="apan on" id="pan-text">
+    <div class="alert">テーマを入力するとAIが語句・時代・詳細を自動生成します。</div>
+    <div class="fg"><label class="fl">テーマ・時代</label><input type="text" id="gtheme" placeholder="例: 江戸時代の三大改革、鎌倉幕府など" /></div>
+    <div class="fg"><label class="fl">生成枚数</label><select id="gcnt" class="fs"><option value="5">5枚</option><option value="10" selected>10枚</option><option value="15">15枚</option><option value="20">20枚</option></select></div>
+    <button class="btn btnp btnw" onclick="genCards()"><i class="ti ti-sparkles"></i> 自動生成する</button>
+  </div>
+
+  <div class="apan" id="pan-photo">
+    <div class="alert">教科書の写真をアップロードすると語句・時代・詳細を自動抽出します。</div>
+    <div class="upload">
+      <input type="file" accept="image/*" id="finput" onchange="handlePhoto(event)" />
+      <div class="uico"><i class="ti ti-photo-up"></i></div>
+      <div class="utxt" id="utxt">タップして写真を選択<br><span style="font-size:12px">JPG・PNG・HEIC対応</span></div>
+    </div>
+    <img id="pimg" class="pimg" style="display:none" />
+    <button class="btn btnp btnw" id="abtn" onclick="analyzePhoto()" style="display:none"><i class="ti ti-scan"></i> 写真を解析する</button>
+  </div>
+
+  <div class="apan" id="pan-manual">
+    <div class="alert">語句・時代・詳細を手動で入力します。</div>
+    <div class="fg"><label class="fl">語句 *</label><input type="text" id="mt" placeholder="例: 参勤交代" /></div>
+    <div class="fg"><label class="fl">時代 *</label><input type="text" id="me" placeholder="例: 江戸時代" list="edl" /></div>
+    <div class="fg"><label class="fl">詳細 *</label><textarea id="md" placeholder="詳細説明を入力してください。"></textarea></div>
+    <div class="fg"><label class="fl">カテゴリ（任意）</label><input type="text" id="mc" placeholder="例: 政治制度・文化・人物" /></div>
+    <button class="btn btnp btnw" onclick="saveManual()"><i class="ti ti-device-floppy"></i> 保存する</button>
+  </div>
+
+  <datalist id="edl">
+    <option value="旧石器時代"></option><option value="縄文時代"></option><option value="弥生時代"></option>
+    <option value="古墳時代"></option><option value="飛鳥時代"></option><option value="奈良時代"></option>
+    <option value="平安時代"></option><option value="鎌倉時代"></option><option value="南北朝時代"></option>
+    <option value="室町時代"></option><option value="戦国時代"></option><option value="安土桃山時代"></option>
+    <option value="江戸時代"></option><option value="明治時代"></option><option value="大正時代"></option>
+    <option value="昭和時代"></option><option value="平成時代"></option><option value="令和時代"></option>
+  </datalist>
+
+  <div id="gloading" class="loading" style="display:none"><div class="spin"></div>AIが生成中です…</div>
+  <div id="gresults" style="display:none;margin-top:14px">
+    <div class="ghdr">
+      <div class="gtit">生成されたカード</div>
+      <button class="btn btnsm" onclick="toggleAll()">すべて選択/解除</button>
+    </div>
+    <div class="glist" id="glist"></div>
+    <button class="btn btnp btnw" onclick="saveGen()"><i class="ti ti-device-floppy"></i> 選択したカードを保存</button>
+  </div>
+</div>
+
+<!-- EDIT MODAL -->
+<div class="modal-bg" id="emod">
+  <div class="modal">
+    <div class="mtit" id="mtit">カードを編集</div>
+    <div class="fg"><label class="fl">語句 *</label><input type="text" id="et" /></div>
+    <div class="fg"><label class="fl">時代 *</label><input type="text" id="ee" list="edl" /></div>
+    <div class="fg"><label class="fl">詳細 *</label><textarea id="ed"></textarea></div>
+    <div class="fg"><label class="fl">カテゴリ（任意）</label><input type="text" id="ec" /></div>
+    <div class="mfoot">
+      <button class="btn" onclick="closeModal()">キャンセル</button>
+      <button class="btn btnp" onclick="saveModal()">保存</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const ERA_ORDER=['旧石器時代','縄文時代','弥生時代','古墳時代','飛鳥時代','奈良時代','平安時代','鎌倉時代','南北朝時代','室町時代','戦国時代','安土桃山時代','江戸時代','明治時代','大正時代','昭和時代','平成時代','令和時代'];
+let cards=[],deck=[],ci=0,fl=false,eid=null,ef='',pb64=null,pbMime='image/jpeg',apiKey='';
+
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2);}
+function sh(a){const b=[...a];for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]];}return b;}
+
+function loadCards(){try{cards=JSON.parse(localStorage.getItem('nh-cards')||'[]');}catch(e){cards=[];}}
+function saveCards(){localStorage.setItem('nh-cards',JSON.stringify(cards));}
+
+function setKey(){
+  const k=document.getElementById('api-input').value.trim();
+  if(!k){alert('APIキーを入力してください');return;}
+  apiKey=k;
+  localStorage.setItem('nh-gemini-key',k);
+  document.getElementById('keystatus').textContent='✓ APIキー設定済み（次回から自動読み込み）';
+  document.getElementById('keystatus').className='keystatus ok';
+  document.getElementById('api-input').value='';
+}
+
+function getEras(){const s=new Set(cards.map(c=>c.era));return ERA_ORDER.filter(e=>s.has(e)).concat([...s].filter(e=>!ERA_ORDER.includes(e)));}
+
+function renderChips(){
+  const eras=getEras();
+  document.getElementById('chips').innerHTML=
+    `<button class="chip ${ef===''?'on':''}" onclick="setEra('')">すべて</button>`+
+    eras.map(e=>`<button class="chip ${ef===e?'on':''}" onclick="setEra('${esc(e)}')">${esc(e)}</button>`).join('');
+}
+
+function setEra(e){ef=e;renderChips();buildDeck();}
+function buildDeck(){deck=sh(ef?cards.filter(c=>c.era===ef):[...cards]);ci=0;fl=false;updateStudy();}
+function shuffleDeck(){deck=sh(deck);ci=0;fl=false;updateStudy();}
+
+function updateStudy(){
+  document.getElementById('tc').textContent=cards.length;
+  document.getElementById('sc').textContent=Math.min(ci,deck.length);
+  document.getElementById('rc').textContent=Math.max(0,deck.length-ci);
+  const em=document.getElementById('empty-s'),cb=document.getElementById('cardbox');
+  if(!deck.length){em.style.display='block';cb.style.display='none';return;}
+  em.style.display='none';cb.style.display='block';
+  const c=deck[ci];
+  document.getElementById('cterm').textContent=c.term;
+  document.getElementById('cera').textContent=c.era;
+  document.getElementById('cdet').textContent=c.detail;
+  document.getElementById('ccat').textContent=c.category?'[ '+c.category+' ]':'';
+  document.getElementById('prg').textContent=`${ci+1} / ${deck.length}`;
+  document.getElementById('cinn').classList.remove('flipped');
+  fl=false;
+}
+
+function flip(){fl=!fl;document.getElementById('cinn').classList.toggle('flipped',fl);}
+function next(){if(ci<deck.length-1){ci++;}else{deck=sh(deck);ci=0;}updateStudy();}
+function prev(){if(ci>0){ci--;updateStudy();}}
+
+function showPage(name){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('on'));
+  document.querySelectorAll('.nbtn').forEach(b=>b.classList.remove('on'));
+  document.getElementById('pg-'+name).classList.add('on');
+  const i=['study','manage','add'].indexOf(name);
+  if(i>=0)document.querySelectorAll('.nbtn')[i].classList.add('on');
+  if(name==='study'){renderChips();buildDeck();}
+  if(name==='manage')renderList();
+}
+
+function renderList(){
+  const fsel=document.getElementById('fsel'),cv=fsel.value,eras=getEras();
+  fsel.innerHTML='<option value="">すべての時代</option>'+eras.map(e=>`<option value="${esc(e)}" ${e===cv?'selected':''}>${esc(e)}</option>`).join('');
+  const f=fsel.value,filtered=f?cards.filter(c=>c.era===f):cards;
+  const el=document.getElementById('clist'),em=document.getElementById('empty-m');
+  if(!filtered.length){el.innerHTML='';em.style.display='block';return;}
+  em.style.display='none';
+  el.innerHTML=filtered.map(c=>`<div class="li"><div class="literm">${esc(c.term)}</div><div class="liera">${esc(c.era)}</div><button class="ibtn" onclick="openModal('${c.id}')" title="編集"><i class="ti ti-edit"></i></button><button class="ibtn del" onclick="delCard('${c.id}')" title="削除"><i class="ti ti-trash"></i></button></div>`).join('');
+}
+
+function openModal(id){
+  eid=id||null;
+  document.getElementById('mtit').textContent=id?'カードを編集':'カードを追加';
+  if(id){const c=cards.find(x=>x.id===id);document.getElementById('et').value=c.term;document.getElementById('ee').value=c.era;document.getElementById('ed').value=c.detail;document.getElementById('ec').value=c.category||'';}
+  else{['et','ee','ed','ec'].forEach(x=>document.getElementById(x).value='');}
+  document.getElementById('emod').classList.add('open');
+}
+function closeModal(){document.getElementById('emod').classList.remove('open');eid=null;}
+function saveModal(){
+  const term=document.getElementById('et').value.trim(),era=document.getElementById('ee').value.trim(),detail=document.getElementById('ed').value.trim(),cat=document.getElementById('ec').value.trim();
+  if(!term||!era||!detail){alert('語句・時代・詳細は必須です');return;}
+  if(eid){const i=cards.findIndex(x=>x.id===eid);cards[i]={...cards[i],term,era,detail,category:cat};}
+  else cards.push({id:uid(),term,era,detail,category:cat});
+  saveCards();closeModal();renderList();
+}
+function delCard(id){if(!confirm('削除しますか？'))return;cards=cards.filter(c=>c.id!==id);saveCards();renderList();}
+function saveManual(){
+  const term=document.getElementById('mt').value.trim(),era=document.getElementById('me').value.trim(),detail=document.getElementById('md').value.trim(),cat=document.getElementById('mc').value.trim();
+  if(!term||!era||!detail){alert('語句・時代・詳細は必須です');return;}
+  cards.push({id:uid(),term,era,detail,category:cat});
+  saveCards();['mt','me','md','mc'].forEach(x=>document.getElementById(x).value='');
+  alert('保存しました！');
+}
+function switchTab(t){
+  document.querySelectorAll('.atab').forEach((x,i)=>x.classList.toggle('on',['text','photo','manual'].indexOf(t)===i));
+  ['text','photo','manual'].forEach(x=>document.getElementById('pan-'+x).classList.toggle('on',x===t));
+  document.getElementById('gresults').style.display='none';
+  document.getElementById('gloading').style.display='none';
+}
+
+async function callGemini(parts){
+  if(!apiKey){alert('まず「学習」タブでAPIキーを設定してください');throw new Error('nokey');}
+  const r=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`,{
+    method:'POST',headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({contents:[{parts}]})
+  });
+  const d=await r.json();
+  if(d.error)throw new Error(d.error.message);
+  return d.candidates[0].content.parts[0].text;
+}
+
+async function genCards(){
+  const theme=document.getElementById('gtheme').value.trim(),cnt=document.getElementById('gcnt').value;
+  if(!theme){alert('テーマを入力してください');return;}
+  setLoading(true);
+  try{
+    const txt=await callGemini([{text:`あなたは日本史の教育専門家です。「${theme}」に関連する日本史の重要語句を${cnt}個生成してください。\nJSON配列のみで回答（前置き・\`\`\`不要）：\n[{"term":"語句","era":"時代名","detail":"100〜150字の詳細説明","category":"カテゴリ"}]`}]);
+    showResults(JSON.parse(txt.replace(/```json|```/g,'').trim()));
+  }catch(e){setLoading(false);if(e.message!=='nokey')alert('生成失敗: '+e.message);}
+}
+
+function handlePhoto(ev){
+  const f=ev.target.files[0];if(!f)return;
+  pbMime=f.type||'image/jpeg';
+  const r=new FileReader();
+  r.onload=e=>{
+    pb64=e.target.result.split(',')[1];
+    const img=document.getElementById('pimg');
+    img.src=e.target.result;img.style.display='block';
+    document.getElementById('abtn').style.display='flex';
+    document.getElementById('utxt').textContent=f.name;
+  };
+  r.readAsDataURL(f);
+}
+
+async function analyzePhoto(){
+  if(!pb64)return;
+  setLoading(true);
+  try{
+    const txt=await callGemini([
+      {inline_data:{mime_type:pbMime,data:pb64}},
+      {text:`この教科書の画像から日本史の重要語句をすべて抽出してください。\nJSON配列のみで回答（前置き・\`\`\`不要）：\n[{"term":"語句","era":"時代名","detail":"100〜150字の詳細説明","category":"カテゴリ"}]\n語句がなければ[]`}
+    ]);
+    showResults(JSON.parse(txt.replace(/```json|```/g,'').trim()));
+  }catch(e){setLoading(false);if(e.message!=='nokey')alert('解析失敗: '+e.message);}
+}
+
+function setLoading(v){document.getElementById('gloading').style.display=v?'block':'none';document.getElementById('gresults').style.display='none';}
+function showResults(items){
+  setLoading(false);
+  if(!items||!items.length){alert('語句が見つかりませんでした。');return;}
+  const el=document.getElementById('glist');
+  el.innerHTML=items.map((x,i)=>`<div class="gitem"><input type="checkbox" class="gchk" id="gc${i}" checked /><div><div class="gterm">${esc(x.term)}</div><div class="gera">${esc(x.era)}${x.category?' · '+esc(x.category):''}</div><div class="gdet">${esc(x.detail)}</div></div></div>`).join('');
+  el.dataset.items=JSON.stringify(items);
+  document.getElementById('gresults').style.display='block';
+}
+function toggleAll(){const cs=document.querySelectorAll('.gchk');const a=[...cs].every(c=>c.checked);cs.forEach(c=>c.checked=!a);}
+function saveGen(){
+  const items=JSON.parse(document.getElementById('glist').dataset.items||'[]');
+  const cs=document.querySelectorAll('.gchk');
+  let n=0;
+  items.forEach((x,i)=>{if(cs[i]?.checked){cards.push({id:uid(),term:x.term,era:x.era,detail:x.detail,category:x.category||''});n++;}});
+  saveCards();
+  document.getElementById('gresults').style.display='none';
+  document.getElementById('gtheme').value='';
+  alert(`${n}枚のカードを保存しました！`);
+  showPage('manage');
+}
+document.getElementById('emod').addEventListener('click',function(e){if(e.target===this)closeModal();});
+
+// 起動時
+loadCards();
+const savedKey=localStorage.getItem('nh-gemini-key');
+if(savedKey){
+  apiKey=savedKey;
+  document.getElementById('keystatus').textContent='✓ APIキー設定済み';
+  document.getElementById('keystatus').className='keystatus ok';
+}
+renderChips();
+buildDeck();
+</script>
+</body>
+</html>
